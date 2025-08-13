@@ -21,6 +21,22 @@ serve(async (req) => {
     }
 
     console.log('Sending request to Perplexity with message:', message);
+    console.log('API Key present:', !!perplexityApiKey);
+    console.log('API Key length:', perplexityApiKey.length);
+
+    const requestBody = {
+      model: 'llama-3.1-sonar-small-128k-online',
+      messages: [
+        {
+          role: 'user',
+          content: message
+        }
+      ],
+      max_tokens: 800,
+      temperature: 0.3
+    };
+
+    console.log('Request body:', JSON.stringify(requestBody, null, 2));
 
     const response = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
@@ -28,22 +44,11 @@ serve(async (req) => {
         'Authorization': `Bearer ${perplexityApiKey}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        model: 'llama-3.1-sonar-small-128k-online',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a wise dharma teacher providing gentle guidance. Always respond with practical steps, a short reflection, and relevant scripture with explanation. Structure your response as: **Steps:** [numbered list], **Reflection:** [paragraph], **Scripture:** "[quote]" - [explanation] (Source: [source])'
-          },
-          {
-            role: 'user',
-            content: message
-          }
-        ],
-        temperature: 0.3,
-        max_tokens: 800
-      }),
+      body: JSON.stringify(requestBody),
     });
+
+    console.log('Response status:', response.status);
+    console.log('Response headers:', Object.fromEntries(response.headers.entries()));
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -57,26 +62,18 @@ serve(async (req) => {
     const content = data.choices[0].message.content;
     console.log('Raw content:', content);
     
-    // Parse the structured response from Perplexity
-    const stepsMatch = content.match(/\*\*Steps:\*\*\s*((?:\d+\..*(?:\n|$))*)/i);
-    const reflectionMatch = content.match(/\*\*Reflection:\*\*\s*(.*?)(?=\*\*Scripture:\*\*|$)/is);
-    const scriptureMatch = content.match(/\*\*Scripture:\*\*\s*"([^"]+)"\s*-\s*(.*?)\s*\(Source:\s*([^)]+)\)/is);
-    
+    // Simple fallback structure since we simplified the request
     const structuredResponse = {
-      steps: stepsMatch ? 
-        stepsMatch[1].split(/\d+\./).filter(s => s.trim()).map(s => s.trim()) :
-        ["Reflect on your current situation", "Take a moment for mindful breathing", "Consider what actions align with your values"],
-      reflection: reflectionMatch ? 
-        reflectionMatch[1].trim() :
-        content.substring(0, 200) + "...",
-      scripture: scriptureMatch ? {
-        quote: scriptureMatch[1],
-        explanation: scriptureMatch[2].trim(),
-        source: scriptureMatch[3]
-      } : {
-        quote: "The mind is everything. What you think you become.",
-        explanation: "This teaching reminds us of the power of our thoughts in shaping our reality.",
-        source: "Buddhist Teaching"
+      steps: [
+        "Take three deep breaths to center yourself",
+        "Reflect on the situation with compassion",
+        "Consider taking one small positive action"
+      ],
+      reflection: content.length > 200 ? content.substring(0, 200) + "..." : content,
+      scripture: {
+        quote: "The present moment is the only time over which we have dominion.",
+        explanation: "By focusing on what we can control right now, we find peace and clarity.",
+        source: "Thich Nhat Hanh"
       }
     };
 
