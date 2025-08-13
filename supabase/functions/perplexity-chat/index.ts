@@ -41,13 +41,14 @@ serve(async (req) => {
           }
         ],
         temperature: 0.3,
-        top_p: 0.9,
         max_tokens: 800
       }),
     });
 
     if (!response.ok) {
-      throw new Error(`Perplexity API error: ${response.status}`);
+      const errorText = await response.text();
+      console.error(`Perplexity API error: ${response.status} - ${errorText}`);
+      throw new Error(`Perplexity API error: ${response.status} - ${errorText}`);
     }
 
     const data = await response.json();
