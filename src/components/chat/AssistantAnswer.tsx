@@ -19,7 +19,11 @@ const AssistantAnswer = ({ data }: { data: AssistantContent }) => {
           <HeartHandshake className="h-4 w-4 text-primary" />
           <h3 className="text-sm font-semibold tracking-wide">Short Reflection</h3>
         </div>
-        <p className="text-sm leading-relaxed">{data.reflection}</p>
+        <div className="text-sm leading-relaxed space-y-2">
+          {data.reflection.split('\n\n').map((paragraph, index) => (
+            <p key={index}>{paragraph}</p>
+          ))}
+        </div>
       </section>
 
       <section aria-label="Practical Steps" className="space-y-2">
@@ -40,7 +44,11 @@ const AssistantAnswer = ({ data }: { data: AssistantContent }) => {
           <h3 className="text-sm font-semibold tracking-wide">Scripture & Explanation</h3>
         </div>
         <blockquote className="text-sm italic border-l-2 pl-3">“{data.scripture.quote}”</blockquote>
-        <p className="text-sm leading-relaxed">{data.scripture.explanation}</p>
+        <div className="text-sm leading-relaxed space-y-2">
+          {data.scripture.explanation.split('\n\n').map((paragraph, index) => (
+            <p key={index}>{paragraph}</p>
+          ))}
+        </div>
         <p className="text-xs text-muted-foreground">Source: {data.scripture.source}</p>
       </section>
 
