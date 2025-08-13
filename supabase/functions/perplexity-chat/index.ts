@@ -69,7 +69,7 @@ serve(async (req) => {
         "Reflect on the situation with compassion",
         "Consider taking one small positive action"
       ],
-      reflection: content.length > 200 ? content.substring(0, 200) + "..." : content,
+      reflection: content,
       scripture: {
         quote: "The present moment is the only time over which we have dominion.",
         explanation: "By focusing on what we can control right now, we find peace and clarity.",

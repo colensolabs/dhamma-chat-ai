@@ -14,6 +14,14 @@ export type AssistantContent = {
 const AssistantAnswer = ({ data }: { data: AssistantContent }) => {
   return (
     <article className="rounded-2xl border bg-card/80 backdrop-blur p-4 md:p-5 space-y-4 shadow-elegant animate-enter">
+      <section aria-label="Short Reflection" className="space-y-2">
+        <div className="flex items-center gap-2">
+          <HeartHandshake className="h-4 w-4 text-primary" />
+          <h3 className="text-sm font-semibold tracking-wide">Short Reflection</h3>
+        </div>
+        <p className="text-sm leading-relaxed">{data.reflection}</p>
+      </section>
+
       <section aria-label="Practical Steps" className="space-y-2">
         <div className="flex items-center gap-2">
           <BadgeCheck className="h-4 w-4 text-primary" />
@@ -24,14 +32,6 @@ const AssistantAnswer = ({ data }: { data: AssistantContent }) => {
             <li key={i}>{s}</li>
           ))}
         </ol>
-      </section>
-
-      <section aria-label="Short Reflection" className="space-y-2">
-        <div className="flex items-center gap-2">
-          <HeartHandshake className="h-4 w-4 text-primary" />
-          <h3 className="text-sm font-semibold tracking-wide">Short Reflection</h3>
-        </div>
-        <p className="text-sm leading-relaxed">{data.reflection}</p>
       </section>
 
       <section aria-label="Scripture & Explanation" className="space-y-2">
