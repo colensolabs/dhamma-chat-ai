@@ -67,17 +67,19 @@ const DharmaChat = () => {
           ))}
         </div>
 
-        <form onSubmit={onSubmit} className="mt-4 flex gap-2">
-          <Input
-            aria-label="Message"
-            placeholder="Ask about meditation, sutras, or daily practice…"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-          />
-          <Button type="submit" className="min-w-24" aria-label="Send message">
-            <SendHorizontal className="mr-1" /> Send
-          </Button>
-        </form>
+        <div className="sticky bottom-0 bg-card pt-4 -mx-4 px-4">
+          <form onSubmit={onSubmit} className="flex gap-2 pb-[max(env(safe-area-inset-bottom),0px)]">
+            <Input
+              aria-label="Message"
+              placeholder="Ask about meditation, sutras, or daily practice…"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+            />
+            <Button type="submit" className="min-w-24" aria-label="Send message">
+              <SendHorizontal className="mr-1" /> Send
+            </Button>
+          </form>
+        </div>
       </CardContent>
     </Card>
   );
