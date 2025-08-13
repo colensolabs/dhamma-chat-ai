@@ -1,5 +1,5 @@
 import { BadgeCheck, BookOpenText, HeartHandshake } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
 
 export type AssistantContent = {
   steps: string[];
@@ -11,7 +11,7 @@ export type AssistantContent = {
   };
 };
 
-const AssistantAnswer = ({ data, onAskTeacher }: { data: AssistantContent; onAskTeacher?: () => void }) => {
+const AssistantAnswer = ({ data }: { data: AssistantContent }) => {
   return (
     <article className="rounded-lg border bg-card p-4 md:p-5 space-y-4 animate-enter">
       <section aria-label="Practical Steps" className="space-y-2">
@@ -44,11 +44,6 @@ const AssistantAnswer = ({ data, onAskTeacher }: { data: AssistantContent; onAsk
         <p className="text-xs text-muted-foreground">Source: {data.scripture.source}</p>
       </section>
 
-      <div className="pt-1">
-        <Button variant="outline" className="w-full" onClick={onAskTeacher} aria-label="Ask a Teacher">
-          Ask a Teacher
-        </Button>
-      </div>
     </article>
   );
 };

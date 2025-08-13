@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { SendHorizontal } from "lucide-react";
 import MessageBubble from "./MessageBubble";
 import AssistantAnswer, { AssistantContent } from "./AssistantAnswer";
-import { toast } from "@/components/ui/use-toast";
+
 
 type UserMsg = { role: "user"; content: string };
 type AssistantMsg = { role: "assistant"; content: AssistantContent };
@@ -87,9 +87,6 @@ const DharmaChat = () => {
               <AssistantAnswer
                 key={i}
                 data={(msg as AssistantMsg).content}
-                onAskTeacher={() =>
-                  toast({ title: "Ask a Teacher", description: "We’ll connect you to a teacher soon." })
-                }
               />
             ) : (
               <MessageBubble key={i} role={msg.role} content={(msg as UserMsg).content} />
