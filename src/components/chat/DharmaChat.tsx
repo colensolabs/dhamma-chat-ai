@@ -54,6 +54,10 @@ const DharmaChat = () => {
         throw error;
       }
 
+      console.log('Perplexity response data:', data);
+      console.log('Reflection length:', data?.reflection?.length);
+      console.log('Full reflection text:', data?.reflection);
+
       setMessages((m) => [...m, { role: "assistant", content: data }]);
     } catch (error) {
       console.error('Error calling Perplexity:', error);
