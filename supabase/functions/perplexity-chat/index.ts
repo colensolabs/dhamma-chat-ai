@@ -25,7 +25,7 @@ serve(async (req) => {
     console.log('API Key length:', perplexityApiKey.length);
 
     const requestBody = {
-      model: 'llama-3.1-sonar-small-128k-online',
+      model: 'sonar',
       messages: [
         {
           role: 'user',
