@@ -13,7 +13,7 @@ export type AssistantContent = {
 
 const AssistantAnswer = ({ data }: { data: AssistantContent }) => {
   return (
-    <article className="rounded-lg border bg-card p-4 md:p-5 space-y-4 animate-enter">
+    <article className="rounded-2xl border bg-card/80 backdrop-blur p-4 md:p-5 space-y-4 shadow-elegant animate-enter">
       <section aria-label="Practical Steps" className="space-y-2">
         <div className="flex items-center gap-2">
           <BadgeCheck className="h-4 w-4 text-primary" />
@@ -40,7 +40,7 @@ const AssistantAnswer = ({ data }: { data: AssistantContent }) => {
           <h3 className="text-sm font-semibold tracking-wide">Scripture & Explanation</h3>
         </div>
         <blockquote className="text-sm italic border-l-2 pl-3">“{data.scripture.quote}”</blockquote>
-        <p className="text-sm">{data.scripture.explanation}</p>
+        <p className="text-sm leading-relaxed">{data.scripture.explanation}</p>
         <p className="text-xs text-muted-foreground">Source: {data.scripture.source}</p>
       </section>
 

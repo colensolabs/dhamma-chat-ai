@@ -18,7 +18,7 @@ const HeroDharma = () => {
           </p>
           <div className="flex gap-3">
             <a href="#chat">
-              <Button size="lg" variant="hero" className="hover-scale">
+              <Button size="lg" variant="hero" className="hover-scale rounded-full px-6">
                 <Sparkles className="mr-1" /> Start a Dharma chat
               </Button>
             </a>
@@ -26,7 +26,7 @@ const HeroDharma = () => {
         </div>
 
         <div className="relative animate-scale-in">
-          <div className="rounded-xl overflow-hidden shadow-elegant hover-scale">
+          <div className="rounded-2xl overflow-hidden shadow-elegant hover-scale">
             <img
               src={heroImage}
               alt="Minimal zen gradient with subtle lotus lines representing a calm Buddhist tech aesthetic"

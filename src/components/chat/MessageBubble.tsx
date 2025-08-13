@@ -13,8 +13,10 @@ const MessageBubble = ({ role, content }: { role: "user" | "assistant"; content:
 
       <div
         className={cn(
-          "max-w-[80%] rounded-lg px-4 py-3 text-sm shadow-elegant animate-fade-in",
-          isUser ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground"
+          "max-w-[80%] rounded-2xl px-4 py-3 text-sm shadow-elegant animate-enter",
+          isUser
+            ? "bg-primary text-primary-foreground ring-1 ring-primary/30"
+            : "bg-card text-foreground ring-1 ring-border"
         )}
       >
         {content}

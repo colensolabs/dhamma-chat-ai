@@ -72,14 +72,15 @@ const DharmaChat = () => {
   };
 
   return (
-    <Card className="animate-enter">
-      <CardHeader>
-        <CardTitle className="text-2xl">Chat</CardTitle>
+    <Card className="animate-enter border bg-background/60 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-elegant">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-2xl tracking-tight">Dharma Chat</CardTitle>
+        <p className="text-sm text-muted-foreground">A calm space to reflect and receive gentle guidance.</p>
       </CardHeader>
       <CardContent>
         <div
           ref={listRef}
-          className="h-[48vh] md:h-[56vh] overflow-y-auto space-y-4 pr-1"
+          className="h-[48vh] md:h-[56vh] overflow-y-auto space-y-4 pr-1 rounded-xl bg-muted/30 p-3"
           aria-live="polite"
         >
           {messages.map((msg, i) => (
@@ -94,15 +95,16 @@ const DharmaChat = () => {
           ))}
         </div>
 
-        <div className="sticky bottom-0 bg-card pt-4 -mx-4 px-4">
-          <form onSubmit={onSubmit} className="flex gap-2 pb-[max(env(safe-area-inset-bottom),0px)]">
+        <div className="sticky bottom-0 bg-card/80 backdrop-blur supports-[backdrop-filter]:bg-card/60 pt-4 -mx-4 px-4">
+          <form onSubmit={onSubmit} className="flex items-center gap-2 pb-[max(env(safe-area-inset-bottom),0px)]">
             <Input
               aria-label="Message"
               placeholder="Describe your situation in a few sentences…"
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              className="rounded-full h-11 md:h-12 px-5"
             />
-            <Button type="submit" className="min-w-24" aria-label="Send message">
+            <Button type="submit" className="rounded-full h-11 md:h-12 px-6 min-w-24" aria-label="Send message">
               <SendHorizontal className="mr-1" /> Send
             </Button>
           </form>
