@@ -119,3 +119,14 @@
   .shadow-glow { box-shadow: var(--shadow-glow); }
   .bg-gradient-primary { background-image: var(--gradient-primary); }
 }
+
+html { font-size: 18px; } /* larger base on phones */
+
+@media (min-width: 768px) {
+html { font-size: 16px; } /* normalize on larger screens */
+}
+body { line-height: 1.7; -webkit-text-size-adjust: 100%; }
+:root { --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom); }
+.app { padding-top: max(1rem, var(--safe-top)); padding-bottom: max(1rem, var(--safe-bottom)); }
+button, .btn { min-height: 44px; padding: 0 16px; font-size: 1rem; }
+input, textarea { min-height: 44px; font-size: 1rem; }
