@@ -33,20 +33,16 @@ serve(async (req) => {
         messages: [
           {
             role: 'system',
-            content: 'You are a wise dharma teacher providing gentle guidance. Respond with practical steps, a short reflection, and relevant scripture with explanation. Format your response as JSON with "steps" (array), "reflection" (string), and "scripture" object with "quote", "explanation", and "source" fields.'
+            content: 'You are a wise dharma teacher providing gentle guidance. Always respond with practical steps, a short reflection, and relevant scripture with explanation. Structure your response as: **Steps:** [numbered list], **Reflection:** [paragraph], **Scripture:** "[quote]" - [explanation] (Source: [source])'
           },
           {
             role: 'user',
             content: message
           }
         ],
-        temperature: 0.2,
+        temperature: 0.3,
         top_p: 0.9,
-        max_tokens: 1000,
-        return_images: false,
-        return_related_questions: false,
-        frequency_penalty: 1,
-        presence_penalty: 0
+        max_tokens: 800
       }),
     });
 
@@ -58,23 +54,30 @@ serve(async (req) => {
     console.log('Perplexity response:', data);
     
     const content = data.choices[0].message.content;
+    console.log('Raw content:', content);
     
-    // Try to parse as JSON, fallback to structured format if not
-    let structuredResponse;
-    try {
-      structuredResponse = JSON.parse(content);
-    } catch {
-      // Fallback structure if response isn't JSON
-      structuredResponse = {
-        steps: ["Reflect on your current situation", "Take a moment for mindful breathing", "Consider what actions align with your values"],
-        reflection: content.substring(0, 200) + "...",
-        scripture: {
-          quote: "The mind is everything. What you think you become.",
-          explanation: "This teaching reminds us of the power of our thoughts in shaping our reality.",
-          source: "Buddhist Teaching"
-        }
-      };
-    }
+    // Parse the structured response from Perplexity
+    const stepsMatch = content.match(/\*\*Steps:\*\*\s*((?:\d+\..*(?:\n|$))*)/i);
+    const reflectionMatch = content.match(/\*\*Reflection:\*\*\s*(.*?)(?=\*\*Scripture:\*\*|$)/is);
+    const scriptureMatch = content.match(/\*\*Scripture:\*\*\s*"([^"]+)"\s*-\s*(.*?)\s*\(Source:\s*([^)]+)\)/is);
+    
+    const structuredResponse = {
+      steps: stepsMatch ? 
+        stepsMatch[1].split(/\d+\./).filter(s => s.trim()).map(s => s.trim()) :
+        ["Reflect on your current situation", "Take a moment for mindful breathing", "Consider what actions align with your values"],
+      reflection: reflectionMatch ? 
+        reflectionMatch[1].trim() :
+        content.substring(0, 200) + "...",
+      scripture: scriptureMatch ? {
+        quote: scriptureMatch[1],
+        explanation: scriptureMatch[2].trim(),
+        source: scriptureMatch[3]
+      } : {
+        quote: "The mind is everything. What you think you become.",
+        explanation: "This teaching reminds us of the power of our thoughts in shaping our reality.",
+        source: "Buddhist Teaching"
+      }
+    };
 
     return new Response(JSON.stringify(structuredResponse), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
