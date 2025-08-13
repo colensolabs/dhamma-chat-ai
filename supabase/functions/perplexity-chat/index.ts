@@ -28,6 +28,10 @@ serve(async (req) => {
       model: 'sonar',
       messages: [
         {
+          role: 'system',
+          content: 'You are a wise dharma teacher providing gentle guidance. Always respond with practical steps, a short reflection, and relevant scripture with explanation. Structure your response as: **Steps:** [numbered list], **Reflection:** [paragraph], **Scripture:** "[quote]" - [explanation] (Source: [source])'
+        },
+        {
           role: 'user',
           content: message
         }
@@ -62,15 +66,23 @@ serve(async (req) => {
     const content = data.choices[0].message.content;
     console.log('Raw content:', content);
     
-    // Simple fallback structure since we simplified the request
+    // Parse the structured response from Perplexity
+    const stepsMatch = content.match(/\*\*Steps:\*\*\s*((?:\d+\..*(?:\n|$))*)/i);
+    const reflectionMatch = content.match(/\*\*Reflection:\*\*\s*(.*?)(?=\*\*Scripture:\*\*|$)/is);
+    const scriptureMatch = content.match(/\*\*Scripture:\*\*\s*"([^"]+)"\s*-\s*(.*?)\s*\(Source:\s*([^)]+)\)/is);
+    
     const structuredResponse = {
-      steps: [
-        "Take three deep breaths to center yourself",
-        "Reflect on the situation with compassion",
-        "Consider taking one small positive action"
-      ],
-      reflection: content,
-      scripture: {
+      steps: stepsMatch ? 
+        stepsMatch[1].split(/\d+\./).filter(s => s.trim()).map(s => s.trim()) :
+        ["Take three deep breaths to center yourself", "Reflect on the situation with compassion", "Consider taking one small positive action"],
+      reflection: reflectionMatch ? 
+        reflectionMatch[1].trim() :
+        content.replace(/\*\*/g, '').substring(0, 300) + "...",
+      scripture: scriptureMatch ? {
+        quote: scriptureMatch[1],
+        explanation: scriptureMatch[2].trim(),
+        source: scriptureMatch[3]
+      } : {
         quote: "The present moment is the only time over which we have dominion.",
         explanation: "By focusing on what we can control right now, we find peace and clarity.",
         source: "Thich Nhat Hanh"
